@@ -9,14 +9,14 @@ export type HeroData = {
 };
 
 export type Headerdata = {
-  logo: { src: string; href: string; alt: string };
+  logo: { src: ImageMetadata; href: string; alt: string };
   nav: { label: string; href: string }[];
 }
 
 export type AboutData = {
   title: string;
   lead?: string;
-  body: string;
+  body: string[];
   image?: ImageMetadata;
 };
 

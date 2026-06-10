@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import type { AboutData } from '../../../config/type';
+
+interface Props { data: AboutData }
+const { data } = Astro.props;
+const { title, lead, body, image } = data;
+---
+<section class="section about about02" id="about">
+  <div class="inner about-inner">
+    <div class="columns">
+      {image && (
+        <figure class="figure">
+          <Image class="image" src={image} alt={title} />
+        </figure>
+      )}
+      <div class="body-wrap">
+        <header class="section-title">
+          <h2 class="title">{title}</h2>
+        </header>
+        {lead && <p class="lead">{lead}</p>}
+        {body.map((text) => <p class="text">{text}</p>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../../../styles/variables" as *;
+  @use "../../../styles/mixins" as *;
+
+  .about02 {}
+  @include tb {}
+  @include sp {}
+</style>

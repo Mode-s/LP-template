@@ -2,20 +2,54 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 import Hero from '../components/section/Hero.astro';
-import About from '../components/section/About.astro';
+import About01 from '../components/section//about/About01.astro';
+import About02 from '../components/section/about/About02.astro';
 import Menu from '../components/section/Menu.astro';
 import Info from '../components/section/Info.astro'; 
 import Access from '../components/section/Access.astro';
 import Contact from '../components/section/Contact.astro';
 
+import type { AboutData } from '../config/type';
+import aboutImg from '../assets/images/logo.png';
+
+
+const aboutData: AboutData = {
+  title: "About",
+  lead: "私たちについて",
+  body: [
+    "1段落目の紹介文がここに入ります。",
+    "2段落目。配列なので段落ごとに <p> へ展開されます。",
+  ],
+  image: aboutImg,
+};
 ---
 
 <BaseLayout>
-	<Hero />
-	<About />
-	<Menu />
-	<Info />
-	<Access />
-	<Contact />
+  <div class="catalog-switch">
+    <button type="button" data-target="about" data-variant="01" aria-pressed="true">About01</button>
+    <button type="button" data-target="about" data-variant="02" aria-pressed="false">About02</button>
+  </div>
+
+  <div data-slot="about">
+    <div data-variant="01"><About01 data={aboutData} /></div>
+    <div data-variant="02" hidden><About02 data={aboutData} /></div>
+  </div>
 </BaseLayout>
 
+<script>
+  // 個別切替: data-slot ごとに variant を1つだけ表示
+  document.querySelectorAll('.catalog-switch button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      const variant = btn.getAttribute('data-variant');
+      const slot = document.querySelector(`[data-slot="${target}"]`);
+      if (!slot) return;
+      slot.querySelectorAll('[data-variant]').forEach((el) => {
+        (el as HTMLElement).hidden = el.getAttribute('data-variant') !== variant;
+      });
+      document
+        .querySelectorAll(`.catalog-switch button[data-target="${target}"]`)
+        .forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    });
+  });
+</script>
